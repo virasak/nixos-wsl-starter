@@ -1,6 +1,4 @@
 {
-  # FIXME: uncomment the next line if you want to reference your GitHub/GitLab access tokens and other secrets
-  # secrets,
   config,
   pkgs,
   username,
@@ -8,7 +6,6 @@
   ...
 }: let
   unstable-packages = with pkgs.unstable; [
-    # FIXME: select your core binaries that you always want on the bleeding-edge
     bat
     bottom
     coreutils
@@ -20,6 +17,7 @@
     git
     git-crypt
     htop
+    helix
     jq
     killall
     mosh
@@ -36,8 +34,6 @@
   ];
 
   stable-packages = with pkgs; [
-    # FIXME: customize these stable packages to your liking for the languages that you use
-
     # key tools
     gnumake # for lunarvim
     gcc # for lunarvim
@@ -98,21 +94,13 @@ in {
     username = "${username}";
     homeDirectory = "/home/${username}";
 
-    # FIXME: set your preferred $EDITOR
     sessionVariables.EDITOR = "${pkgs.neovim}/bin/nvim";
-    # FIXME: set your preferred $SHELL
     sessionVariables.SHELL = "/etc/profiles/per-user/${username}/bin/zsh";
   };
 
   home.packages =
     stable-packages
-    ++ unstable-packages
-    ++
-    # FIXME: you can add anything else that doesn't fit into the above two lists in here
-    [
-      # pkgs.some-package
-      # pkgs.unstable.some-other-package
-    ];
+    ++ unstable-packages;
 
   # FIXME: if you want to version your LunarVim config, add it to the root of this repo and uncomment the next line
   # home.file.".config/lvim/config.lua".source = ./lvim_config.lua;
@@ -123,7 +111,6 @@ in {
     nix-index.enableZshIntegration = true;
     nix-index-database.comma.enable = true;
 
-    # FIXME: disable this if you don't want to use the starship prompt
     starship.enable = true;
     starship.settings = {
       aws.disabled = true;
@@ -139,7 +126,6 @@ in {
       hostname.style = "bold green";
     };
 
-    # FIXME: disable whatever you don't want
     fzf.enable = true;
     fzf.enableZshIntegration = true;
     lsd.enable = true;
@@ -162,18 +148,9 @@ in {
         side-by-side = true;
         navigate = true;
       };
-      userEmail = ""; # FIXME: set your git email
-      userName = ""; #FIXME: set your git username
+      userEmail = "virasak@gmail.com";
+      userName = "virasak";
       extraConfig = {
-        # FIXME: uncomment the next lines if you want to be able to clone private https repos
-        # url = {
-        #   "https://oauth2:${secrets.github_token}@github.com" = {
-        #     insteadOf = "https://github.com";
-        #   };
-        #   "https://oauth2:${secrets.gitlab_token}@gitlab.com" = {
-        #     insteadOf = "https://gitlab.com";
-        #   };
-        # };
         push = {
           default = "current";
           autoSetupRemote = true;
@@ -187,7 +164,6 @@ in {
       };
     };
 
-    # FIXME: This is my .zshrc - you can fiddle with it if you want
     zsh = {
       enable = true;
       autocd = true;
@@ -225,18 +201,6 @@ in {
         gc = "nix-collect-garbage --delete-old";
         refresh = "source ${config.home.homeDirectory}/.zshrc";
         show_path = "echo $PATH | tr ':' '\n'";
-
-        # FIXME: add more git aliases here if you want them
-        gapa = "git add --patch";
-        grpa = "git reset --patch";
-        gst = "git status";
-        gdh = "git diff HEAD";
-        gp = "git push";
-        gph = "git push -u origin HEAD";
-        gco = "git checkout";
-        gcob = "git checkout -b";
-        gcm = "git checkout master";
-        gcd = "git checkout develop";
 
         pbcopy = "/mnt/c/Windows/System32/clip.exe";
         pbpaste = "/mnt/c/Windows/System32/WindowsPowerShell/v1.0/powershell.exe -command 'Get-Clipboard'";
